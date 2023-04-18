@@ -1,4 +1,4 @@
-// ===================鼠标悬停出现Works的drop-down menu==============
+// =================dropdown menu on mouseover on 'Works'==============
 
 const works = document.querySelector('#works');
 const dropdown = document.querySelector('#dropdown');
@@ -15,8 +15,7 @@ works.addEventListener('mouseover', showDropdown);
 works.addEventListener('mouseout', hideDropdown);
 
 
-
-// ==============鼠标悬停出现图片，图片随着鼠标移动而移动=================
+// =============picture shows on mouseover, picture moves when mouse moves================
 
 const workTitles = document.querySelectorAll('.work-title');
 const previewImage = document.getElementById('preview-image');
@@ -45,81 +44,31 @@ for (let i = 0; i < workTitles.length; i++) {
   title.addEventListener('mouseout', handleMouseOut);
 }
 
+// ====================  Handle Side Menu ===========================
 
-// =========================设置动态切换图片框=================================
+const burgerButton = document.querySelector('.hamburger-menu');
+const hiddenMenuPage = document.querySelector('.side-menu');
+const closeButton = document.querySelector('.close-menu');
+const openMenuWorks = document.querySelector('.side-menu-works');
+const worksButton = document.querySelector('#works-button');
 
-const slideshow = document.querySelector('.slideshow');
-const slides = slideshow.querySelectorAll('img');
+burgerButton.addEventListener('click', showBurgerMenu);
 
-let currentSlide = 0;
-let slideInterval = setInterval(nextSlide, 900);
-let isPaused = false;
-
-slideshow.addEventListener('mouseover', pauseSlideshow);
-slideshow.addEventListener('mouseout', startSlideshow);
-// slideshow.addEventListener('click', enlargeSlide);
-
-slides[currentSlide].classList.add('active');
-
-function nextSlide() {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add('active');
+function showBurgerMenu(){
+  hiddenMenuPage.classList.add('side-menu-open');
 }
 
-function pauseSlideshow() {
-  clearInterval(slideInterval);
-  isPaused = true;
+closeButton.addEventListener('click', hideBurgerMenu);
+
+function hideBurgerMenu(){
+  hiddenMenuPage.classList.remove('side-menu-open');
 }
 
-function startSlideshow() {
-  if (isPaused) {
-    slideInterval = setInterval(nextSlide, 900);
-    isPaused = false;
+worksButton.addEventListener('click', openWorks);
+
+function openWorks(){
+  if (openMenuWorks.style.display==="block"){
+    openMenuWorks.style.display="none";
   }
-}
-
-function enlargeSlide(e) {
-  if (e.target.tagName === 'IMG') {
-    if (e.target.classList.contains('enlarged')) {
-      e.target.classList.remove('enlarged');
-    } else {
-      e.target.classList.add('enlarged');
-    }
-  }
-}
-
-// ===========================设置modal放大图片==============================
-
-document.addEventListener("DOMContentLoaded", function () {
-  const gridImages = document.querySelectorAll('.grid-image');
-  for (let i = 0; i < gridImages.length; i++) {
-      gridImages[i].addEventListener("click", openModal);
-  }
-  const closeButton = document.getElementsByClassName("close")[0];
-  closeButton.addEventListener("click", closeModal);
-});
-
-// 打开模态框的函数
-function openModal() {
-  const imageModal = document.getElementById("image-modal");
-  imageModal.style.display = "flex";
-
-  const modalImage = document.getElementById("modal-image");
-  modalImage.src = this.src;
-
-  const caption = document.getElementById("caption");
-  caption.innerHTML = this.alt;
-
-  // 禁止滚动
-  document.body.style.overflow = "hidden";
-}
-
-// 关闭模态框的函数
-function closeModal() {
-  const imageModal = document.getElementById("image-modal");
-  imageModal.style.display = "none";
-
-  // 恢复滚动
-  document.body.style.overflow = "auto";
+  else (openMenuWorks.style.display="block")
 }
