@@ -18,7 +18,9 @@ works.addEventListener('mouseout', hideDropdown);
 // =============picture shows on mouseover, picture moves when mouse moves================
 
 const workTitles = document.querySelectorAll('.work-title');
-const previewImage = document.getElementById('preview-image');
+// console.log (workTitles);
+
+const previewImage = document.querySelector('#preview-image');
 
 function handleMouseOver(e) {
     const imageSrc = e.target.dataset.imageSrc;
@@ -38,10 +40,9 @@ function handleMouseOut() {
 }
 
 for (let i = 0; i < workTitles.length; i++) {
-  const title = workTitles[i];
-  title.addEventListener('mouseover', handleMouseOver);
-  title.addEventListener('mousemove', handleMouseMove);
-  title.addEventListener('mouseout', handleMouseOut);
+  workTitles[i].addEventListener('mouseover', handleMouseOver);
+  workTitles[i].addEventListener('mousemove', handleMouseMove);
+  workTitles[i].addEventListener('mouseout', handleMouseOut);
 }
 
 // ====================  Handle Side Menu ===========================

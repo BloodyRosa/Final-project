@@ -46,72 +46,68 @@ function openWorks(){
 
 // =================== setting Auto-changing Album ========================
 
-const slideshow = document.querySelector('.slideshow');
-const slides = slideshow.querySelectorAll('img');
+const slides = document.querySelectorAll('.animated-img');
 
-let currentSlide = 0;
-let slideInterval = setInterval(nextSlide, 900);
-let isPaused = false;
+let currentSlide = 0;   // <-------this is very important, do it first so to ensure the value of this variable is always existing
+
+slides[currentSlide].classList.add('active'); //step 1: makes the 1st photo to be shown 
+
+let slideInterval = setInterval(nextSlide, 1000); //step 2: every 1s, excutes the function 'nextSlide'
+
+function nextSlide() {
+  slides[currentSlide].classList.remove('active'); //step 2(1): change 'display block' back to 'display none' for 1st photo
+
+  if(currentSlide < slides.length - 1){    //step 2(2): check the index of current slide (0-12), if it's less than 13, adds 1 to its index 
+    currentSlide = currentSlide + 1; 
+  }else{
+    currentSlide = 0;   //step 2(3): when the index of current slide more than 12 or equal to 13, changes it back to 0 (1st photo)
+  }
+  console.log('currentSlide',currentSlide);
+
+  slides[currentSlide].classList.add('active'); //step 3: adds 'display: block' to the following index
+}
+
+// ====================== setting mouse hover to stop photo changing ==================
+
+const slideshow = document.querySelector('.slideshow');
+
 
 slideshow.addEventListener('mouseover', pauseSlideshow);
 slideshow.addEventListener('mouseout', startSlideshow);
 
-slides[currentSlide].classList.add('active');
-
-function nextSlide() {
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add('active');
-}
-
 function pauseSlideshow() {
   clearInterval(slideInterval);
-  isPaused = true;
 }
 
 function startSlideshow() {
-  if (isPaused) {
-    slideInterval = setInterval(nextSlide, 900);
-    isPaused = false;
-  }
+  slideInterval = setInterval(nextSlide, 1000);
 }
 
-function enlargeSlide(e) {
-  if (e.target.tagName === 'IMG') {
-    if (e.target.classList.contains('enlarged')) {
-      e.target.classList.remove('enlarged');
-    } else {
-      e.target.classList.add('enlarged');
-    }
-  }
-}
 
 // ======================= setting Modal for photo Enlarge ==========================
 
 // setting event: click image and open modal, click cross to close modal
 
-document.addEventListener("DOMContentLoaded", function () {
   const gridImages = document.querySelectorAll('.grid-image');
+  const modalCloseButton = document.querySelector('.close-button');
+
   for (let i = 0; i < gridImages.length; i++) {
       gridImages[i].addEventListener("click", openModal);
   }
-  const closeButton = document.getElementsByClassName("close")[0];
-  closeButton.addEventListener("click", closeModal);
-});
+
+  modalCloseButton.addEventListener("click", closeModal);
+
 
 // function for open the Modal
 
 function openModal() {
-  const imageModal = document.getElementById("image-modal");
+  const imageModal = document.querySelector('#image-modal');
   imageModal.style.display = "flex";
 
-  const modalImage = document.getElementById("modal-image");
-  modalImage.src = this.src;
+  const enlargedImage = document.querySelector('#enlarged-image');
+  enlargedImage.src = this.src;
 
-  const caption = document.getElementById("caption");
-  caption.innerHTML = this.alt;
-
-// disable the overflow (scroll)
+// disable the overflow (scroll of whole page)
 
   document.body.style.overflow = "hidden";
 }
@@ -119,7 +115,7 @@ function openModal() {
 // function for closing the Modal
 
 function closeModal() {
-  const imageModal = document.getElementById("image-modal");
+  const imageModal = document.querySelector('#image-modal');
   imageModal.style.display = "none";
 
 // resume scroll
